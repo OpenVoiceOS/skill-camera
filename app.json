@@ -1,0 +1,5 @@
+{
+    "icon": "/res/icon/camera.png",
+    "name": "Camera",
+    "action": "skill-camera.openvoiceos.homepage"
+}

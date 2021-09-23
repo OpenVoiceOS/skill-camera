@@ -32,6 +32,7 @@ class CameraSkill(MycroftSkill):
 
     def initialize(self):
         """Perform any initial setup."""
+        self.bus.on("skill-camera.openvoiceos.homepage", self.handle_open_camera)
         # Register Camera GUI Events
         self.gui.register_handler(
             "CameraSkill.ViewPortStatus", self.handle_camera_status
