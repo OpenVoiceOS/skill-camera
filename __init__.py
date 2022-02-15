@@ -26,12 +26,14 @@ class CameraSkill(MycroftSkill):
     def __init__(self):
         super(CameraSkill, self).__init__("CameraSkill")
         self.camera_mode = None
+        self.save_folder = None
+
+    def initialize(self):
+        """Perform any initial setup."""
         self.save_folder = os.path.expanduser("~/Pictures")
         if not os.path.isdir(self.save_folder):
             os.makedirs(self.save_folder)
 
-    def initialize(self):
-        """Perform any initial setup."""
         self.bus.on("skill-camera.openvoiceos.homepage", self.handle_open_camera)
         # Register Camera GUI Events
         self.gui.register_handler(
