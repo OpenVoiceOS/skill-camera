@@ -16,6 +16,8 @@ import os
 
 from mycroft import MycroftSkill, intent_handler
 from mycroft.skills import skill_api_method
+from ovos_utils.process_utils import RuntimeRequirements
+from ovos_utils import classproperty
 
 
 class CameraSkill(MycroftSkill):
@@ -27,6 +29,18 @@ class CameraSkill(MycroftSkill):
         super(CameraSkill, self).__init__("CameraSkill")
         self.camera_mode = None
         self.save_folder = None
+
+    @classproperty
+    def runtime_requirements(self):
+        return RuntimeRequirements(internet_before_load=False,
+                                   network_before_load=False,
+                                   gui_before_load=True,
+                                   requires_internet=False,
+                                   requires_network=False,
+                                   requires_gui=True,
+                                   no_internet_fallback=True,
+                                   no_network_fallback=True,
+                                   no_gui_fallback=False)
 
     def initialize(self):
         """Perform any initial setup."""
