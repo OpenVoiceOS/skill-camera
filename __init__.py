@@ -14,19 +14,20 @@
 
 import os
 
-from mycroft import MycroftSkill, intent_handler
-from mycroft.skills import skill_api_method
+from ovos_workshop.skills import OVOSSkill
+from ovos_workshop.decorators import intent_handler
+from ovos_workshop.decorators import skill_api_method
 from ovos_utils.process_utils import RuntimeRequirements
 from ovos_utils import classproperty
 
 
-class CameraSkill(MycroftSkill):
+class CameraSkill(OVOSSkill):
     """
     Camera Skill Class
     """
 
-    def __init__(self):
-        super(CameraSkill, self).__init__("CameraSkill")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.camera_mode = None
         self.save_folder = None
 
@@ -48,14 +49,13 @@ class CameraSkill(MycroftSkill):
         if not os.path.isdir(self.save_folder):
             os.makedirs(self.save_folder)
 
-        self.bus.on("skill-camera.openvoiceos.homepage", self.handle_open_camera)
+        self.add_event("skill-camera.openvoiceos.homepage",
+                       self.handle_open_camera)
         # Register Camera GUI Events
-        self.gui.register_handler(
-            "CameraSkill.ViewPortStatus", self.handle_camera_status
-        )
-        self.gui.register_handler(
-            "CameraSkill.EndProcess", self.handle_camera_completed
-        )
+        self.gui.register_handler("CameraSkill.ViewPortStatus",
+                                  self.handle_camera_status)
+        self.gui.register_handler("CameraSkill.EndProcess",
+                                  self.handle_camera_completed)
 
     @intent_handler("CaptureSingleShot.intent")
     def handle_capture_single_shot(self, _):
@@ -118,8 +118,3 @@ class CameraSkill(MycroftSkill):
     def stop(self):
         """Respond to system stop command."""
         self.handle_camera_completed()
-
-
-def create_skill():
-    """Create Skill for registration in Mycroft."""
-    return CameraSkill()
